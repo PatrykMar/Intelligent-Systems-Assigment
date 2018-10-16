@@ -26,22 +26,29 @@ public class is16155599
     }
 	public static void main (String [] args) throws IOException
 	{
-		int matrixSize = sizeOfMatrix("GA2018-19.txt");
+		File file = new File("GA2018-19.txt");
+		Scanner reader = new Scanner(file);
+		int size = 0;
+		int count= 0;
+		while(reader.hasNextLine()){
+			String cursor = reader.nextLine();
+			String [] split = cursor.split(" ");
+			count += split.length -1;
+			for(int i = 0;i<split.length;i++)
+			{
+				int temp = Integer.parseInt(split[i]);
+				if(temp>size)
+				{
+					size = temp + 1;
+				}
+			}
+		}
+		int matrixSize = size;
 		is16155599 g = new is16155599(matrixSize);
 		int [][] edges;
-		File in = new File("GA2018-19.txt");
-			Scanner reader = new Scanner(in);
-			int count = 0;
-			while(reader.hasNextLine()){
-				String cursor = reader.nextLine();
-				count += cursor.split(" ").length - 1;
-			}
-			reader.close();
-			
 			edges = new int[count][];
-			//System.out.println(edges.length);
 			int i = 0;
-			reader = new Scanner(in);
+			reader = new Scanner(file);
 			while(reader.hasNextLine()){
 				String cursor = reader.nextLine();
 				String [] split = cursor.split(" ");
@@ -53,39 +60,38 @@ public class is16155599
 				 
 				}
 				i += split.length - 1;
-				
 			}
 			reader.close();
 				for(int k=0;k<edges.length;k++)
 				{
 					for(int n=1;n<edges[k].length;n++)
 					{
-						//System.out.println(edges[k][n]);
 						g.addEdge(edges[k][n-1],edges[k][n]);
 					}
 				}
 		System.out.print(g.toString());
-	}
-	
-	
-	public static int sizeOfMatrix(String filename) throws IOException
-	{
-		File file = new File(filename);
-		Scanner reader = new Scanner(file);
-		int size = 0;
-		while(reader.hasNextLine()){
-			String cursor = reader.nextLine();
-			String [] split = cursor.split(" ");
-			for(int i = 0;i<split.length;i++)
+		
+		Scanner user = new Scanner(System.in);
+		System.out.println("Press the Enter key to continue:");
+		String input = user.nextLine();
+		if (input.equals(""))
+		{
+			ArrayList <Integer> order = new ArrayList <Integer>();
+			for (int l = 0; l < matrixSize; l++)
 			{
-				int temp = Integer.parseInt(split[i]);
-				if(temp>size)
+				int temp = (int) (Math.random() * (matrixSize ));
+				while (order.contains(temp))
 				{
-					size = temp + 1;
+					temp = (int) (Math.random() * (matrixSize));
 				}
-			}	
+				
+				order.add(temp);
+			}
+			
+			for (int p = 0; p < order.size(); p++)
+			{
+				System.out.print(order.get(p) + " ");
+			}
 		}
-		reader.close();
-		return size;
 	}
 }

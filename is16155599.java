@@ -5,20 +5,20 @@ public class is16155599
 {
 	private boolean adjMatrix[][];
 	private int numVertices;
-	public void Graph(int numVertices) {
+	public  is16155599(int numVertices) {
           this.numVertices = numVertices;
           adjMatrix = new boolean[numVertices][numVertices];
     }
 	public void addEdge(int i, int j) {
-                adjMatrix[i][j] = true;
-                adjMatrix[j][i] = true;
+					adjMatrix[i][j] = true;
+					adjMatrix[j][i] = true;
+                
     }
 	public String toString() {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < numVertices; i++) {
-           // s.append(i + ": ");
             for (boolean j : adjMatrix[i]) {
-               // s.append((j?1:0) + " ");
+               s.append((j?1:0) + " ");
             }
             s.append("\n");
         }
@@ -27,7 +27,7 @@ public class is16155599
 	public static void main (String [] args) throws IOException
 	{
 		int matrixSize = sizeOfMatrix("GA2018-19.txt");
-		Graph g = new Graph(matrixSize);
+		is16155599 g = new is16155599(matrixSize);
 		int [][] edges;
 		File in = new File("GA2018-19.txt");
 			Scanner reader = new Scanner(in);
@@ -56,15 +56,15 @@ public class is16155599
 				
 			}
 			reader.close();
-				for(int k=0;k< edges.length;k++)
+				for(int k=0;k<edges.length;k++)
 				{
 					for(int n=1;n<edges[k].length;n++)
 					{
-						g.addEdge(edges[k][0],edges[0][n]);
-				
+						//System.out.println(edges[k][n]);
+						g.addEdge(edges[k][n-1],edges[k][n]);
 					}
 				}
-		 System.out.print(g.toString());
+		System.out.print(g.toString());
 	}
 	
 	

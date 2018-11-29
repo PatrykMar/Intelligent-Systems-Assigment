@@ -55,32 +55,44 @@ public class is16155599
 
 				int matrixSize = 0;
 
-				FileReader reader = new FileReader(file);
-				Scanner in = new Scanner(reader);
+				Scanner reader = new Scanner(file);
 
-				while(in.hasNext()){
-					int n = in.nextInt();
-					String fileElements[] = in.nextLine().split(" ");
-					if(n>matrixSize)
+				while(reader.hasNextLine())
+				{
+					String cursor = reader.nextLine();
+					String split[] = cursor.split(" ");
+					for(int i =0;i<split.length;i++)
 					{
-						matrixSize = n;
+						int temp = Integer.parseInt(split[i]);
+						if(temp>matrixSize)
+						{
+							matrixSize = temp + 1;
+						}
 					}
-					adjMatrix = new int [matrixSize+1][matrixSize+1];
-					if(fileElements.length == 2){
-						int number1 = Integer.parseInt(fileElements[0]);
-						int number2 = Integer.parseInt(fileElements[1]);
+						
+				}
+				adjMatrix = new int [matrixSize][matrixSize];
+
+				reader = new Scanner(file);
+				while(reader.hasNextLine()){
+				String cursor = reader.nextLine();
+				String [] split = cursor.split(" ");
+					if(split.length == 2)
+					{
+						int number1 = Integer.parseInt(split[0]);
+						int number2 = Integer.parseInt(split[1]);
 						adjMatrix[number1][number2]=1;
 						adjMatrix[number2][number1]=1;
+
 					}
 				}
-
 				order = new ArrayList<Integer>();
-				for(int i = 0;i < matrixSize + 1; i++)
+				for(int i = 0;i < matrixSize ; i++)
 				{
-					int temp = (int)(Math.random() * (matrixSize + 1));
+					int temp = (int)(Math.random() * (matrixSize ));
 					while(order.contains(temp))
 					{
-						temp = (int) (Math.random() * (matrixSize + 1));
+						temp = (int) (Math.random() * (matrixSize ));
 					}
 					order.add(temp);
 				}
@@ -88,7 +100,7 @@ public class is16155599
 				double newFitness;
 				newFitness = calculateFitness(order);
 
-				while(temperature>cool)
+				while(temperature>0)
 				{
 					ArrayList<Integer>tempOrder = order;
 					double tempFitness;
@@ -104,11 +116,11 @@ public class is16155599
 					}
 					temperature -= coolRate;
 					evo.add(newFitness);
-					System.out.println(newFitness);
-				}
-				show(adjMatrix,order,chunk);
-			}
-			catch(NumberFormatException ex)
+				}	
+			
+			printToFile(evo);
+			show(adjMatrix,order,chunk);	
+		}catch(NumberFormatException ex)
 			{
 				System.err.println("NUMBERS ONLY");
 			}
@@ -116,8 +128,8 @@ public class is16155599
 			{
 				System.err.println("Error IO exception");
 			}
-		}
 	}
+}
 
 	public static double calculateFitness(ArrayList <Integer>order)
 	{
@@ -173,6 +185,23 @@ public class is16155599
 
 	public static void show(int[][] adjMatrix, ArrayList <Integer> order, double chunk){
 		new Visualisation(adjMatrix,order,chunk);
+	}
+
+	public static void printToFile(ArrayList<Double> evo)
+	{
+		try{
+			File file2 = new File("out.txt");
+			PrintWriter write = new PrintWriter(file2);
+			for(int i=0;i<evo.size();i++)
+			{
+				System.out.println(evo.get(i));
+				write.println(evo.get(i));
+			}
+			write.close();
+		}catch(IOException e){
+			e.printStackTrace();
+			System.err.println("Can't create out file");
+		}
 	}
 }
 
